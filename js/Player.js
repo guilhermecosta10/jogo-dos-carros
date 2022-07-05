@@ -24,15 +24,20 @@ class Player
   }
 
   //atualizar a contagem dos players
-  updateCount(count){
+  updateCount(count)
+  {
     database.ref("/").update({
       playerCount: count   
     });
   }
 
   //trazer a informação do playerCount do banco de dados para o VSCode
-  getCount(){
-    
+  getCount()
+  {
+      var playerCountRef = database.ref("playerCount");
+      playerCountRef.on("value", function(data){
+        playerCount = data.val();
+      })
   }
 
 

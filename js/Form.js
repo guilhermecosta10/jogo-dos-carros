@@ -42,10 +42,17 @@ class Form
   {
     this.playButton.mousePressed(()=>{
 
-      this.input.hide()
-      this.playButton.hide()
+      this.input.hide();
+      this.playButton.hide();
       var message = `Seja bem vindo, ${this.input.value()}</br> Espere o outro jogador conectar...`;
-      this.greeting.html(message)
+      this.greeting.html(message);
+      playerCount +=1;
+      player.name = this.input.value();
+      player.index = playerCount;
+      player.addPlayer(); 
+      player.updateCount(playerCount); 
+
+
 
     }) 
   }

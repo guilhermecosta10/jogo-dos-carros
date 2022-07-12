@@ -41,7 +41,8 @@ class Player
   }
 
   //trazer as informações dos players para o jogo, para a variável allPlayers
-  static getPlayersInfo(){
+  static getPlayersInfo()
+  {
     var playerInfoRef = database.ref("players");
     playerInfoRef.on("value", data =>{
       allPlayers = data.val();
@@ -52,10 +53,22 @@ class Player
   update(){
     var playerIndex = "players/player" + this.index;
     database.ref(playerIndex).update({
-      positonX: this.positionX,
-      positonY: this.positionY,
+      positionX: this.positionX,
+      positionY: this.positionY,
     });
   }
+
+  //atualizar a posição do outro player
+  getDistance() 
+  {
+    var playerDistanceRef = database.ref("players/player" + this.index)
+    playerDistanceRef.on("value", data =>{
+      var data = data.val();
+      this.positionX = data.positionX
+      this.positionY = data.positionY
+    })
+  }
+
 
 
 }

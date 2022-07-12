@@ -48,6 +48,14 @@ class Game
 
         carros[index-1].position.x = x;
         carros[index-1].position.y = y;
+
+        if(index == player.index) 
+        {
+          fill("#ff0000");
+          stroke(10);
+          ellipse(x,y,60);
+          camera.position.y = carros[index-1].position.y;
+        }
       }
 
       this.playerControl();

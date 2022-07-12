@@ -40,5 +40,22 @@ class Player
       })
   }
 
+  //trazer as informações dos players para o jogo, para a variável allPlayers
+  static getPlayersInfo(){
+    var playerInfoRef = database.ref("players");
+    playerInfoRef.on("value", data =>{
+      allPlayers = data.val();
+    })
+  }
+
+  //atualizar a posição do player no banco de dados
+  update(){
+    var playerIndex = "players/player" + this.index;
+    database.ref(playerIndex).update({
+      positonX: this.positionX,
+      positonY: this.positionY,
+    });
+  }
+
 
 }

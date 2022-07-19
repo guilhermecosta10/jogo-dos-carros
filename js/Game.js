@@ -41,7 +41,7 @@ class Game
     this.resetTitle.position(width/2 + 200, 40);
 
     this.resetButton.class("resetButton");
-    this.resetTitle.position(width/2 + 230, 100);
+    this.resetButton.position(width/2 + 230, 100);
 
     this.leaderboardTitle.html("Placar");
     this.leaderboardTitle.class("leadersText");
@@ -98,10 +98,12 @@ class Game
   }
 
   //jogo começa
-  play(){
+  play()
+  {
 
     this.handleElements();
     Player.getPlayersInfo();
+    this.buttonReset();
     
     if(allPlayers != undefined){
       //mostra a pista
@@ -137,11 +139,27 @@ class Game
 
   //mover o carro
   playerControl(){
-    if(keyIsDown(UP_ARROW)){
+    if(keyIsDown(UP_ARROW))
+    {
       player.positionY +=10;
       player.update();
     }
+
+    if(keyIsDown(LEFT_ARROW) && player.positionX > width/3 -50)
+    {
+      player.positionX -= 10;
+      player.update();
+    }
+
+    if(keyIsDown(RIGHT_ARROW) && player.positionX < width/2 +300)
+    {
+      player.positionX += 10;
+      player.update();
+    }
+
   }
+
+  
 
   //atualizar o game state
   updateState(state)
@@ -158,6 +176,20 @@ class Game
     gameStateRef.on("value", function(data){
     gameState = data.val();
     })
+  }
+
+
+  //configuração do botão de reset
+  buttonReset() 
+  {
+    this.resetButton.mousePressed(()=>{
+      database.ref("/").set({
+        gameState : 0,
+        playerCount : 0,
+        players : {}
+      });
+      window.location.reload();
+    });
   }
 
 

@@ -15,6 +15,7 @@ var allPlayers;
 var fuels, powerCoins;
 var fuelsImg, powerCoinsImg;
 var obstacle1Image, obstacle2Image;
+var obstaclesGroup;
 
 function preload() 
 {

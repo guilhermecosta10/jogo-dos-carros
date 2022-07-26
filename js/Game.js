@@ -33,6 +33,8 @@ class Game
     //criação dos grupos de sprites
     fuels = new Group();
     powerCoins = new Group();
+    obstaclesGroup = new Group();
+
 
     var obstaclesPositions = [
       { x: width / 2 + 250, y: height - 800, image: obstacle2Image },
@@ -51,8 +53,9 @@ class Game
 
 
     //adicionando os sprites
-    this.addSprites(fuels,12,fuelsImg,0.02);
-
+    this.addSprites(fuels,9,fuelsImg,0.02);
+    this.addSprites(powerCoins,13,powerCoinsImg,0.08);
+    this.addSprites(obstaclesGroup, obstaclesPositions.length, obstacle2Image, 0.04, obstaclesPositions);
   }
 
   //transição de telas
@@ -151,6 +154,7 @@ class Game
           stroke(10);
           ellipse(x,y,60);
           camera.position.y = carros[index-1].position.y;
+          this.collectFuels();
         }
       }
 
@@ -163,7 +167,7 @@ class Game
   }
 
   //adicionar os sprites no jogo
-  addSprites(spriteGroup, numberOfSprites, spriteImage, scale)
+  addSprites(spriteGroup, numberOfSprites, spriteImage, scale, positions = [])
   {
     //laço de repetição para criar vários sprites
     for(var i=0; i < numberOfSprites; i++)
@@ -171,8 +175,18 @@ class Game
       //posições aleatórias
       var x,y;
 
-      x = random(width/2 - 150, width/2 + 150);
-      y = random(-height*4.5, height - 400);
+      if(positions.length > 0) 
+      {
+        x = positions[i].x;
+        y = positions[i].y;
+        spriteImage = positions[i].image;
+      }
+
+      else
+      {
+        x = random(width/2 - 150, width/2 + 150);
+        y = random(-height*4.5, height - 400);
+      }
 
       //criação do sprite
       var sprite = createSprite(x,y);
@@ -239,6 +253,15 @@ class Game
       });
       window.location.reload();
     });
+  }
+
+
+  collectFuels(index)
+  {
+    carros[index -1].overlap(fuels, function(collector, collected){
+      player.fuel = 80
+      collected.remove();
+    })
   }
 
 

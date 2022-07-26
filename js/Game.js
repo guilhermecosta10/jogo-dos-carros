@@ -17,6 +17,7 @@ class Game
     player = new Player();
     playerCount = player.getCount();
 
+    //criação dos sprites dos carros
     carro1 = createSprite(width/2-50,height-100);
     carro1.addImage("car1", carro1Img);
     carro1.scale = 0.07;
@@ -25,8 +26,32 @@ class Game
     carro2.addImage("car2", carro2Img);
     carro2.scale = 0.07;
 
+    //matriz dos carros
     carros = [carro1,carro2];
     //          0       1
+
+    //criação dos grupos de sprites
+    fuels = new Group();
+    powerCoins = new Group();
+
+    var obstaclesPositions = [
+      { x: width / 2 + 250, y: height - 800, image: obstacle2Image },
+      { x: width / 2 - 150, y: height - 1300, image: obstacle1Image },
+      { x: width / 2 + 250, y: height - 1800, image: obstacle1Image },
+      { x: width / 2 - 180, y: height - 2300, image: obstacle2Image },
+      { x: width / 2, y: height - 2800, image: obstacle2Image },
+      { x: width / 2 - 180, y: height - 3300, image: obstacle1Image },
+      { x: width / 2 + 180, y: height - 3300, image: obstacle2Image },
+      { x: width / 2 + 250, y: height - 3800, image: obstacle2Image },
+      { x: width / 2 - 150, y: height - 4300, image: obstacle1Image },
+      { x: width / 2 + 250, y: height - 4800, image: obstacle2Image },
+      { x: width / 2, y: height - 5300, image: obstacle1Image },
+      { x: width / 2 - 180, y: height - 5500, image: obstacle2Image }
+    ];
+
+
+    //adicionando os sprites
+    this.addSprites(fuels,12,fuelsImg,0.02);
 
   }
 
@@ -135,6 +160,30 @@ class Game
       drawSprites();
     }
 
+  }
+
+  //adicionar os sprites no jogo
+  addSprites(spriteGroup, numberOfSprites, spriteImage, scale)
+  {
+    //laço de repetição para criar vários sprites
+    for(var i=0; i < numberOfSprites; i++)
+    {
+      //posições aleatórias
+      var x,y;
+
+      x = random(width/2 - 150, width/2 + 150);
+      y = random(-height*4.5, height - 400);
+
+      //criação do sprite
+      var sprite = createSprite(x,y);
+      //adicionando a image
+      sprite.addImage("sprite", spriteImage);
+      //definindo o tamanho
+      sprite.scale = scale;
+      //adicionando no grupo
+      spriteGroup.add(sprite);
+
+    }
   }
 
   //mover o carro

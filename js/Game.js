@@ -7,6 +7,8 @@ class Game
     this.leaderboardTitle = createElement("h2");
     this.leader1 = createElement("h2");
     this.leader2 = createElement("h2");
+
+    this.playerMoving = false;
   }
 
   //tela inicial de cadastro do jogador
@@ -140,7 +142,9 @@ class Game
       this.showLeaderboard();
       //mostrar barra de vidas
       this.showLife();
-
+      //mostrar barra de combustível
+      this.showFuel();
+      
       var index = 0;
       for(var plr in allPlayers){
         index = index + 1;
@@ -157,6 +161,7 @@ class Game
           ellipse(x,y,60);
           camera.position.y = carros[index-1].position.y;
           this.collectFuels(index);
+          this.collectCoins(index);
         }
       }
 
@@ -179,13 +184,27 @@ class Game
   }
 
   //exibir a barra de vida
-  showLife(){
+  showLife()
+  {
     push();
     image(lifeImg, width/2 - 130, height -  player.positionY - 400, 20,20);
     fill("white");
     rect(width/2 - 100, height -  player.positionY - 400, 185, 20);
     fill("red");
     rect(width/2 - 100, height -  player.positionY - 400, player.life, 20);
+    pop();
+  }
+ 
+
+  //exibir a barra de combustíveis
+  showFuel()
+  {
+    push();
+    image(fuelsImg, width/2 - 130, height -  player.positionY - 400, 20,20);
+    fill("white");
+    rect(width/2 - 100, height -  player.positionY - 400, 185, 20);
+    fill("yellow");
+    rect(width/2 - 100, height -  player.positionY - 400, player.fuel, 20);
     pop();
   }
   
@@ -241,6 +260,7 @@ class Game
     {
       player.positionY +=10;
       player.update();
+      this.playerMoving = true;
     }
 
     if(keyIsDown(LEFT_ARROW) && player.positionX > width/3 -50)
@@ -298,10 +318,26 @@ class Game
       player.fuel = 80
       collected.remove();
     })
+
+    if(player.fuel > 0 && this.playerMoving) 
+    {
+      player.fuel -= 10;
+    }
+
   }
   
   //coletar moedas
-
+  collectCoins(index) 
+  {
+    carros[index -1].overlap(powerCoins, function(collector, collected){
+      player.score += 5
+      collected.remove();
+      player.update();
+    })
+  }
 
 
 }
+
+
+

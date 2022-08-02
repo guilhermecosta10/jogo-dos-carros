@@ -128,9 +128,9 @@ class Game
   //jogo começa
   play()
   {
-
     this.handleElements();
-    Player.getPlayersInfo();
+    Player.getPlayersInfo(); // função estática
+    player.getCarsAtEnd();
     this.buttonReset();
     
     if(allPlayers != undefined){
@@ -138,6 +138,8 @@ class Game
       image(pista,0, -height*5, width, height*6);
       //mostra o placar
       this.showLeaderboard();
+      //mostrar barra de vidas
+      this.showLife();
 
       var index = 0;
       for(var plr in allPlayers){
@@ -154,16 +156,49 @@ class Game
           stroke(10);
           ellipse(x,y,60);
           camera.position.y = carros[index-1].position.y;
-          this.collectFuels();
+          this.collectFuels(index);
         }
       }
 
       this.playerControl();
 
+      //verificar se os carros passaram pela linha de chegada
+      const finishLine = height*6 - 100;
+      if(player.positionY > finishLine){
+        player.rank += 1;
+        Player.updateCarsAtEnd(player.rank);
+        player.update();
+        gameState = 2;
+        this.showRank();
+      }
+
       //mostra os sprites
       drawSprites();
     }
 
+  }
+
+  //exibir a barra de vida
+  showLife(){
+    push();
+    image(lifeImg, width/2 - 130, height -  player.positionY - 400, 20,20);
+    fill("white");
+    rect(width/2 - 100, height -  player.positionY - 400, 185, 20);
+    fill("red");
+    rect(width/2 - 100, height -  player.positionY - 400, player.life, 20);
+    pop();
+  }
+  
+
+  //sweet alert se cruzar a linha de chegada
+  showRank(){
+    swal({
+      title: `Incrível! ${"\n"}Rank ${"\n"} ${player.rank}º Lugar`,
+      text: "Você alcançou a linha de chegada",
+      imageUrl: "https://raw.githubusercontent.com/vishalgaddam873/p5-multiplayer-car-race-game/master/assets/cup.png",
+      imageSize: "100x100",
+      confirmButtonText: "Ok",
+    });
   }
 
   //adicionar os sprites no jogo
@@ -249,13 +284,14 @@ class Game
       database.ref("/").set({
         gameState : 0,
         playerCount : 0,
-        players : {}
+        players : {}, 
+        carsAtEnd: 0,
       });
       window.location.reload();
     });
   }
 
-
+  //coletar combustível
   collectFuels(index)
   {
     carros[index -1].overlap(fuels, function(collector, collected){
@@ -263,6 +299,9 @@ class Game
       collected.remove();
     })
   }
+  
+  //coletar moedas
+
 
 
 }

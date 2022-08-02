@@ -76,6 +76,18 @@ class Player
     })
   }
 
+  //trazer a informação dos players que completaram a corrida
+  getCarsAtEnd(){
+    database.ref('carsAtEnd').on("value", (data)=>{
+      this.rank = data.val();
+    });
+  }
 
+  //atualização dos players que chegaram ao final da corrida
+  static updateCarsAtEnd(rank){
+    database.ref('/').update({
+      carsAtEnd: rank
+    });
+  }
 
 }

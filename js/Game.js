@@ -9,6 +9,7 @@ class Game
     this.leader2 = createElement("h2");
 
     this.playerMoving = false;
+    this.leftKeyActive = false;
   }
 
   //tela inicial de cadastro do jogador
@@ -162,6 +163,7 @@ class Game
           camera.position.y = carros[index-1].position.y;
           this.collectFuels(index);
           this.collectCoins(index);
+          this.obstaclesCollision(index);
         }
       }
 
@@ -200,11 +202,11 @@ class Game
   showFuel()
   {
     push();
-    image(fuelsImg, width/2 - 130, height -  player.positionY - 400, 20,20);
+    image(fuelsImg, width/2 - 130, height -  player.positionY - 350, 20,20);
     fill("white");
-    rect(width/2 - 100, height -  player.positionY - 400, 185, 20);
+    rect(width/2 - 100, height -  player.positionY - 350, 185, 20);
     fill("yellow");
-    rect(width/2 - 100, height -  player.positionY - 400, player.fuel, 20);
+    rect(width/2 - 100, height -  player.positionY - 350, player.fuel, 20);
     pop();
   }
   
@@ -265,19 +267,35 @@ class Game
 
     if(keyIsDown(LEFT_ARROW) && player.positionX > width/3 -50)
     {
+      this.leftKeyActive = true;
       player.positionX -= 10;
       player.update();
     }
 
     if(keyIsDown(RIGHT_ARROW) && player.positionX < width/2 +300)
     {
+      this.leftKeyActive = false;
       player.positionX += 10;
       player.update();
     }
 
   }
 
-  
+  //colisão com obstáculos
+  obstaclesCollision(index){
+    if(carros[index-1].collide(obstaclesGroup)){
+      if(this.leftKeyActive){
+        player.positionX +=100;
+      }
+      else{
+        player.positionX -=100;
+      }
+      if(player.life > 0){
+        player.life -= 185/4;
+      }
+      player.update();
+    }
+  }
 
   //atualizar o game state
   updateState(state)

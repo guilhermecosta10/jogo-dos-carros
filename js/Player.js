@@ -8,6 +8,7 @@ class Player
     this.rank = 0;
     this.score = 0;
     this.fuel = 185;
+    this.life = 185;
   }
 
   //inserir os players no banco de dados
@@ -25,6 +26,7 @@ class Player
       positionY: this.positionY,
       rank: this.rank,
       score : this.score,
+      life: this.life,
     });
   }
 
@@ -62,6 +64,7 @@ class Player
       positionY: this.positionY,
       rank: this.rank,
       score : this.score,
+      life: this.life,
     });
   }
 

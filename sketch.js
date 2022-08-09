@@ -16,6 +16,7 @@ var fuels, powerCoins;
 var fuelsImg, powerCoinsImg, lifeImg;
 var obstacle1Image, obstacle2Image;
 var obstaclesGroup;
+var explosionImg;
 
 function preload() 
 {
@@ -28,6 +29,7 @@ function preload()
   obstacle1Image = loadImage("assets/obstacle1.png");
   obstacle2Image = loadImage("assets/obstacle2.png");
   lifeImg = loadImage("assets/life.png");
+  explosionImg = loadImage("assets/blast.png");
 }
 
 function setup() 
@@ -53,6 +55,14 @@ function draw()
     console.log ("gameState 1");
     game.play();
   }
+
+  if(gameState == 2) 
+  {
+    game.End();
+    game.showLeaderboard();
+  }
+  
+
 }
 
 function windowResized() 
